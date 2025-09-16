@@ -2,8 +2,8 @@ const Cliente = require("../models/Cliente");
 
 // Listar todos
 exports.index = async (req, res) => {
-  
-  res.render("cliente/index");
+  const clientes = await Cliente.findAll(); 
+  res.render("cliente/index", {clientes});
 };
 
 exports.save = async (req, res) => {
