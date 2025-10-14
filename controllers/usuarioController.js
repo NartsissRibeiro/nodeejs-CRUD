@@ -36,3 +36,7 @@ exports.delete = async (req, res) => {
   await Usuario.destroy({ where: { id: req.params.id }});
   res.redirect("/usuarios");
 };
+
+exports.loginForm = (req, res) => {
+  res.render("usuario/login");
+};
