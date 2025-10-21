@@ -2,17 +2,18 @@ const express = require("express");
 const router = express.Router();
 const usuarioController = require("../controllers/usuarioController.js");
 
-router.get("/usuarios", usuarioController.index);
-router.get("/usuarios/new", usuarioController.new);
-router.post("/usuarios", usuarioController.save);
-router.get("/usuarios/edit/:id", usuarioController.edit);
-router.post("/usuarios/update/:id", usuarioController.update);
-router.get("/usuarios/delete/:id", usuarioController.delete);
+const authMiddleware = require("../middlewares/authMiddleware");
 
-//login
+router.get("/usuarios", authMiddleware, usuarioController.index);
+router.get("/usuarios/new", authMiddleware, usuarioController.new);
+router.post("/usuarios", authMiddleware, usuarioController.save);
+router.get("/usuarios/edit/:id", authMiddleware, usuarioController.edit);
+router.post("/usuarios/update/:id", authMiddleware, usuarioController.update);
+router.get("/usuarios/delete/:id", authMiddleware, usuarioController.delete);
+
 router.get("/login", usuarioController.loginForm);
 router.post("/login", usuarioController.login);
-router.get("/login", usuarioController.logout);
+router.get("/logout", usuarioController.logout);
 
 
 module.exports = router;

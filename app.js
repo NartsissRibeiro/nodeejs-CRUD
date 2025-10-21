@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const authMiddleware = require("./middlewares/authMiddleware");
 const app     = express();
 
 const clienteRoutes = require("./routes/clienteRoutes");
@@ -15,9 +16,7 @@ app.use(session({
   resave: false,
   saveUnintialized: false
 
-}
-)
-);
+}));
 
 app.use((req, res, next) => {
   res.locals.usuariologado = req.session.usuario;
@@ -26,6 +25,10 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.render("index"); // Renderiza views/index.ejs
+});
+
+app.get("/", authMiddleware, (req, res) =>{
+res.render("index");
 });
 
 // Rotas

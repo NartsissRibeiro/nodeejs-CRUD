@@ -40,3 +40,30 @@ exports.delete = async (req, res) => {
 exports.loginForm = (req, res) => {
   res.render("usuario/login");
 };
+
+exports.login = async (req, res) => {
+  const { email, senha } = req.body;
+  const usuario = await Usuario.findOne({ where: { email }});
+
+  if (!usuario) {
+    return res.send("Usuário não encontrado!");
+  }
+
+  if (usuario.senha !== senha){
+    return res.send("Senha incorreta!");
+  }
+
+  req.session.usuario = {
+    id: usuario.id,
+    nome: usuario.nome,
+    email: usuario.email
+  };
+
+  res.redirect("/");
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+};
